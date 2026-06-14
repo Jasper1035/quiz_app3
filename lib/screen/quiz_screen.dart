@@ -1,3 +1,5 @@
+import 'package:flutter_blurhash/flutter_blurhash.dart';
+// import 'package:blurhash/blurhash.dart';
 import 'package:flutter/material.dart';
 // import 'package:quiz_app3/model/question.dart';
 import 'package:quiz_app3/model/questions.dart';
@@ -44,56 +46,67 @@ class _QuizScreenState extends State<QuizScreen> {
 
     return Scaffold(
       appBar: AppBar(title: Text('Quiz')),
-      body: Padding(
-        padding: EdgeInsets.all(24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text(
-              question.question,
-              style: TextStyle(fontSize: 23),
-              textAlign: TextAlign.center,
-            ),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: question.options.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: selectedAnswerIndex == null
-                      ? () => pickAnswer(index)
-                      : null,
-                  child: AnswerCard(
-                    currentIndex: index,
-                    question: question.options[index],
-                    isSelected: selectedAnswerIndex == index,
-                    selectedAnswerIndex: selectedAnswerIndex,
-                    correctAnswerIndex: question.correctAnswerIndex,
-                  ),
-                );
-              },
-            ),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: BlurHash(hash: 'LJD9#OD%00?b~qRjD%xut7ofxuRj'),
+          ),
 
-            isLastQuestion
-                ? RectangleButton(
-                    label: 'Finish',
-                    onPressed: () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (_) {
-                            return ResultScreen(score: score);
-                          },
-                        ),
-                      );
-                    },
-                  )
-                : RectangleButton(
-                    label: 'Next',
-                    onPressed: selectedAnswerIndex != null
-                        ? goToNextQuestion
-                        : null,
-                  ),
-          ],
-        ),
+          // Positioned.fill(
+          //   child:  BlurHash(hash: "LJD9#OD%00?b~qRjD%xut7ofxuRj"),
+          // ),
+          Padding(
+            padding: EdgeInsets.all(24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  question.question,
+                  style: TextStyle(fontSize: 23),
+                  textAlign: TextAlign.center,
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: question.options.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: selectedAnswerIndex == null
+                          ? () => pickAnswer(index)
+                          : null,
+                      child: AnswerCard(
+                        currentIndex: index,
+                        question: question.options[index],
+                        isSelected: selectedAnswerIndex == index,
+                        selectedAnswerIndex: selectedAnswerIndex,
+                        correctAnswerIndex: question.correctAnswerIndex,
+                      ),
+                    );
+                  },
+                ),
+
+                isLastQuestion
+                    ? RectangleButton(
+                        label: 'Finish',
+                        onPressed: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (_) {
+                                return ResultScreen(score: score);
+                              },
+                            ),
+                          );
+                        },
+                      )
+                    : RectangleButton(
+                        label: 'Next',
+                        onPressed: selectedAnswerIndex != null
+                            ? goToNextQuestion
+                            : null,
+                      ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
